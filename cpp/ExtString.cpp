@@ -209,4 +209,14 @@ vector<string> ExtString::file2vector( const char* filepath )
 	return ret;
 }
 
+string ExtString::formatDeltaTimestamp( long deltaTime , const char* separator )
+{
+	long secs = deltaTime < 0 ? 0 : deltaTime;
+
+	if (secs > 24 * 3600) {
+		return format("%dD %02d:%02d:%02d",secs / (24 * 3600), secs / 3600 % 24, secs / 60 % 60, secs % 60);
+	}
+	return format("%02d:%02d:%02d", secs / 3600, secs / 60 % 60, secs % 60);
+}
+
 

@@ -38,5 +38,7 @@ namespace ExtString
 	// 读取文件 每行一个string
 	vector<string> file2vector(const char* filepath);
 
+	string formatDeltaTimestamp(long deltaTime , const char* separator = ":");
+
 
 }
