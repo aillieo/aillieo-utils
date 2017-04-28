@@ -138,18 +138,108 @@ string ExtString::trim( const string& str, bool trimLeft/*=true*/, bool trimRigh
 
 wstring ExtString::string2wstring( const string& str )
 {
+
+#ifdef WIN32
+
+	std::locale sys_locale("");
+
+	const char* data_from = str.c_str();
+	const char* data_from_end = str.c_str() + str.size();
+	const char* data_from_next = 0;
+
+	wchar_t* data_to = new wchar_t[str.size() + 1];
+	wchar_t* data_to_end = data_to + str.size() + 1;
+	wchar_t* data_to_next = 0;
+
+	wmemset( data_to, 0, str.size() + 1 );
+
+	typedef std::codecvt<wchar_t, char, mbstate_t> convert_facet;
+	mbstate_t in_state = 0;
+	auto result = std::use_facet<convert_facet>(sys_locale).in(
+		in_state, data_from, data_from_end, data_from_next,
+		data_to, data_to_end, data_to_next );
+	if( result == convert_facet::ok )
+	{
+		std::wstring dst = data_to;
+		delete[] data_to;
+		return dst;
+	}
+	else
+	{
+		printf( "convert error!\n" );
+		delete[] data_to;
+		return std::wstring(L"");
+	}
+
+#else
+
 	typedef std::codecvt_utf8<wchar_t> convert_typeX;
 	std::wstring_convert<convert_typeX, wchar_t> converterX;
 	return converterX.from_bytes(str);
+
+#endif
+
+
 }
 
 string ExtString::wstring2string( const wstring& str )
 {
+
+#ifdef WIN32
+
+	std::locale sys_locale("");
+
+	const wchar_t* data_from = str.c_str();
+	const wchar_t* data_from_end = str.c_str() + str.size();
+	const wchar_t* data_from_next = 0;
+
+	int wchar_size = 4;
+	char* data_to = new char[(str.size() + 1) * wchar_size];
+	char* data_to_end = data_to + (str.size() + 1) * wchar_size;
+	char* data_to_next = 0;
+
+	memset( data_to, 0, (str.size() + 1) * wchar_size );
+
+	typedef std::codecvt<wchar_t, char, mbstate_t> convert_facet;
+	mbstate_t out_state = 0;
+	auto result = std::use_facet<convert_facet>(sys_locale).out(
+		out_state, data_from, data_from_end, data_from_next,
+		data_to, data_to_end, data_to_next );
+	if( result == convert_facet::ok )
+	{
+		std::string dst = data_to;
+		delete[] data_to;
+		return dst;
+	}
+	else
+	{
+		printf( "convert error!\n" );
+		delete[] data_to;
+		return std::string("");
+	}
+
+#else
+
 	typedef std::codecvt_utf8<wchar_t> convert_typeX;
 	std::wstring_convert<convert_typeX, wchar_t> converterX;
 	return converterX.to_bytes(str);
+
+#endif
+
 }
 
+
+string ExtString::wstring2utf8string( const std::wstring& str )
+{
+	std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+	return conv.to_bytes( str );
+}
+
+wstring ExtString::utf8string2wstring( const std::string& str )
+{
+	std::wstring_convert<std::codecvt_utf8<wchar_t> > conv;
+	return conv.from_bytes( str );
+}
 
 vector<string> ExtString::file2vector( const char* filepath )
 {
@@ -218,5 +308,34 @@ string ExtString::formatDeltaTimestamp( long deltaTime , const char* separator )
 	}
 	return format("%02d:%02d:%02d", secs / 3600, secs / 60 % 60, secs % 60);
 }
+
+size_t ExtString::getUtf8stringLength( const string& str )
+{
+	auto charLen = [&](const char* chars)
+	{
+		int x = 0xf0 & (*chars);
+		size_t ret;
+		x >>= 4;
+		ret = 4;
+		if (x <= 14)
+			ret = 3;
+		if (x <= 12)
+			ret = 2;
+		if (x <= 7)
+			ret = 1;
+		return ret;
+	};
+
+
+	size_t ret = 0;
+	const char* cstr = str.c_str();
+	while (cstr && *cstr) {
+		cstr += charLen(cstr);
+		ret++;
+	}
+	return ret;
+
+}
+
 
 

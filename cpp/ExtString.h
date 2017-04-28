@@ -35,10 +35,17 @@ namespace ExtString
 	wstring string2wstring(const string& str);
 	string wstring2string(const wstring& str);
 
+	// wstring 和 utf8string互转
+	std::string wstring2utf8string( const wstring& str );
+	std::wstring utf8string2wstring( const string& str );
+
 	// 读取文件 每行一个string
 	vector<string> file2vector(const char* filepath);
 
+	// 将秒数转化为 D hh:mm:ss 格式
 	string formatDeltaTimestamp(long deltaTime , const char* separator = ":");
 
+	// 获取utf8格式字符串长度
+	size_t getUtf8stringLength(const string& str);
 
 }
