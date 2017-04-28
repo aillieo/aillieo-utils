@@ -32,8 +32,8 @@ namespace ExtString
 	string trim(const string& str, bool trimLeft=true, bool trimRight=true);
 
 	// string 和 wstring互转
-	//wstring string2wstring(const string& str);
-	//string wstring2string(const wstring& str);
+	wstring string2wstring(const string& str);
+	string wstring2string(const wstring& str);
 
 	// 读取文件 每行一个string
 	vector<string> file2vector(const char* filepath);

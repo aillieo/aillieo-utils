@@ -135,7 +135,7 @@ string ExtString::trim( const string& str, bool trimLeft/*=true*/, bool trimRigh
 	return tmp;
 }
 
-/*
+
 wstring ExtString::string2wstring( const string& str )
 {
 	typedef std::codecvt_utf8<wchar_t> convert_typeX;
@@ -149,7 +149,7 @@ string ExtString::wstring2string( const wstring& str )
 	std::wstring_convert<convert_typeX, wchar_t> converterX;
 	return converterX.to_bytes(str);
 }
-*/
+
 
 vector<string> ExtString::file2vector( const char* filepath )
 {
