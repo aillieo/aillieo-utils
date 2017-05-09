@@ -48,4 +48,9 @@ namespace ExtString
 	// 获取utf8格式字符串长度
 	size_t getUtf8stringLength(const string& str);
 
+	// 时间戳转为时间或日期
+	string timeStampToLocalDate(time_t &t);
+	string timeStampToLocalTime(time_t &t);
+	string timeStampToUTCData(time_t &t);
+	string timeStampToUTCTime(time_t &t);
 }

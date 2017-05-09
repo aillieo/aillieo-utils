@@ -337,5 +337,38 @@ size_t ExtString::getUtf8stringLength( const string& str )
 
 }
 
+string ExtString::timeStampToLocalDate(time_t &t) {
+	struct tm tm;
+	char s[100];
 
+	tm = *localtime(&t);
+	strftime(s, sizeof(s), "%Y-%m-%d", &tm);
+	return s;
+}
 
+string ExtString::timeStampToLocalTime(time_t &t) {
+	struct tm tm;
+	char s[100];
+
+	tm = *localtime(&t);
+	strftime(s, sizeof(s), "%Y-%m-%d  %H:%M:%S", &tm);
+	return s;
+}
+
+string ExtString::timeStampToUTCData(time_t &t) {
+	struct tm tm;
+	char s[100];
+
+	tm = *gmtime(&t);
+	strftime(s, sizeof(s), "%Y-%m-%d", &tm);
+	return s;
+}
+
+string ExtString::timeStampToUTCTime(time_t &t) {
+	struct tm tm;
+	char s[100];
+
+	tm = *gmtime(&t);
+	strftime(s, sizeof(s), "%Y-%m-%d  %H:%M:%S", &tm);
+	return s;
+}
