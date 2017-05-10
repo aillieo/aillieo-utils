@@ -337,38 +337,85 @@ size_t ExtString::getUtf8stringLength( const string& str )
 
 }
 
-string ExtString::timeStampToLocalDate(time_t &t) {
+string ExtString::timeStampToLocalDate(time_t &t)
+{
 	struct tm tm;
 	char s[100];
-
 	tm = *localtime(&t);
 	strftime(s, sizeof(s), "%Y-%m-%d", &tm);
 	return s;
 }
 
-string ExtString::timeStampToLocalTime(time_t &t) {
+string ExtString::timeStampToLocalTime(time_t &t)
+{
 	struct tm tm;
 	char s[100];
-
 	tm = *localtime(&t);
 	strftime(s, sizeof(s), "%Y-%m-%d  %H:%M:%S", &tm);
 	return s;
 }
 
-string ExtString::timeStampToUTCData(time_t &t) {
+string ExtString::timeStampToUTCData(time_t &t)
+{
 	struct tm tm;
 	char s[100];
-
 	tm = *gmtime(&t);
 	strftime(s, sizeof(s), "%Y-%m-%d", &tm);
 	return s;
 }
 
-string ExtString::timeStampToUTCTime(time_t &t) {
+string ExtString::timeStampToUTCTime(time_t &t)
+{
 	struct tm tm;
 	char s[100];
-
 	tm = *gmtime(&t);
 	strftime(s, sizeof(s), "%Y-%m-%d  %H:%M:%S", &tm);
 	return s;
+}
+
+string ExtString::formatQuantityShorten( long& val )
+{
+	long _val = val;
+	if (val < 0) 
+	{
+		_val = -val;
+	}
+	std::string ret = format("%ld",_val);
+	int pos = ret.length() - 3;
+	while (pos > 0) {
+		ret.insert(pos, ",");
+		pos -= 3;
+	}
+	if (val < 0) {
+		ret = "-" + ret;
+	}
+	return ret;
+}
+
+string ExtString::formatQuantityComma( long& val )
+{
+	char q[7] = { ' ', 'K', 'M', 'G', 'T', 'P', 'E' };
+	double _val = val;
+	if(val < 0)
+	{
+		_val = -val;
+	}
+	if (_val >= 1000) 
+	{
+		size_t i = 0;
+		while (_val / 1000 >= 1) 
+		{
+			_val = _val / 1000;
+			i++;
+		}
+		string ret = format("%.1f%c", _val, q[i]);
+		if(val<0)
+		{
+			ret = "-" + ret;
+		}
+		return ret;
+	} else 
+	{
+		return format("%ld",val);
+	}
 }

@@ -53,4 +53,8 @@ namespace ExtString
 	string timeStampToLocalTime(time_t &t);
 	string timeStampToUTCData(time_t &t);
 	string timeStampToUTCTime(time_t &t);
+
+	// 格式化大数量
+	string formatQuantityShorten(long& val);
+	string formatQuantityComma(long& val);
 }
