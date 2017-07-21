@@ -22,6 +22,12 @@ namespace ExtGeom
 	};
 
 
-
+	struct Line2
+	{
+		Point2 p1;
+		Point2 p2;
+		Line2(Point2 _p1, Point2 _p2):p1(_p1),p2(_p2){}
+		float length(){return 100.0f;}
+	};
 
 }
