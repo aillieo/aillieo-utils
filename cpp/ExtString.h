@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <sstream>
 
 #pragma once
 
@@ -8,6 +9,8 @@
 using std::string;
 using std::wstring;
 using std::vector;
+using std::ostringstream;
+using namespace std;
 
 namespace ExtString 
 {
@@ -57,4 +60,24 @@ namespace ExtString
 	// 格式化大数量
 	string formatQuantityShorten(long& val);
 	string formatQuantityComma(long& val);
+	
+	
+	// 通用tostring
+	template<class T>
+	string toString(T t)
+	{
+		ostringstream os;
+		os<<t;
+		return os.str();
+	}
+	template<class T>
+	string vecToString(const vector<T>& vec)
+	{
+		ostringstream os;
+		for (int i=0; i<int(vec.size())-1; i++) os<<vec[i]<<",";
+		if (vec.size()>0) os << *vec.rbegin();
+		return os.str();
+	}
+	
 }
+
