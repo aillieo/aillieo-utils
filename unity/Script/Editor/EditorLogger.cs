@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace AillieoUtils.Editor
 {
+    [AttributeUsage(AttributeTargets.Class)]
     public class EditorLoggerAttribute : Attribute
     {
         public string scriptFileName = string.Empty;

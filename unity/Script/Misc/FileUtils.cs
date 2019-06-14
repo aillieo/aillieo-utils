@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -137,6 +137,11 @@ namespace AillieoUtils
         public static bool DirectoryExists(string pathName)
         {
             return Directory.Exists(pathName);
+        }
+
+        public static string AssetPathToFilePath(string assetPath)
+        {
+            return string.Format("{0}/../{1}", Application.dataPath, assetPath);
         }
 
     }
